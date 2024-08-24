@@ -22,7 +22,7 @@ func main() {
 	// Start
 	scanner := bufio.NewScanner(os.Stdin)
 	fmt.Println("---------------------")
-	fmt.Println("Start of Micah's FTP App for Dad's file thing :)")
+	fmt.Println("Start of Micah's FTP App to get files and sizes")
 	fmt.Println("---------------------")
 	// Get Server Addr
 	if address == "" {

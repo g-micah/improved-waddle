@@ -100,12 +100,12 @@ func main() {
 	sort.Slice(files, func(i int, j int) bool {
 		return int(files[i].Size) > int(files[j].Size)
 	})
-	outputString := "File Name | File Size (KB)\n"
+	outputString := "File Name | File Size (KB) | Last Modified\n"
 	for _, element := range files {
 		if element.Type.String() == "folder" {
 			element.Size = uint64(1)
 		}
-		outputString += element.Name + " | " + fmt.Sprintf("%.2f", convertByteToKb(int64(element.Size))) + "\n"
+		outputString += element.Name + " | " + fmt.Sprintf("%.2f", convertByteToKb(int64(element.Size))) + " | " + element.Time.String() + "\n"
 	}
 	// Create .txt
 	err = os.WriteFile("output.txt", []byte(outputString), 0644)
@@ -123,11 +123,14 @@ func main() {
 	// Set value of a cell.
 	f.SetCellValue("Sheet1", "A1", "Filename")
 	f.SetCellValue("Sheet1", "B1", "File Size (KB)")
+	f.SetCellValue("Sheet1", "C1", "Last Modified")
 	for index, element := range files {
 		column1, _ := excelize.CoordinatesToCellName(1, index+2)
 		column2, _ := excelize.CoordinatesToCellName(2, index+2)
+		column3, _ := excelize.CoordinatesToCellName(3, index+2)
 		f.SetCellValue("Sheet1", column1, element.Name)
 		f.SetCellValue("Sheet1", column2, convertByteToKb(int64(element.Size)))
+		f.SetCellValue("Sheet1", column3, element.Time.String())
 	}
 	// Save spreadsheet by the given path.
 	err = f.SaveAs("output.xlsx")
